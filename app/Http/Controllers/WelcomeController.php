@@ -40,8 +40,8 @@ class WelcomeController extends Controller
     }
 
     public function paymentStripe(Request $request){        
-        // Stripe::setApiKey('sk_test_51LSOeLHo1IBUssic5KrB04Ctcopm1hMonpXVSSpA1nsra065fH7ESFzQIAyxGd15xUWmQQGo85RK9I8b2qCJhEdS00Yw3KRA31');
-        Stripe::setApiKey('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');
+         Stripe::setApiKey('sk_test_51LSOeLHo1IBUssic5KrB04Ctcopm1hMonpXVSSpA1nsra065fH7ESFzQIAyxGd15xUWmQQGo85RK9I8b2qCJhEdS00Yw3KRA31');
+       // Stripe::setApiKey('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');
 
         $amount = $request->amount;
         $offer_id = $request->offer_id;
@@ -56,7 +56,7 @@ class WelcomeController extends Controller
         $rate_name = $request->rate_name;
         $number = $request->number;
 
-
+        return $offerAltan;
         try {
             $charge = \Stripe\Charge::create([
                 'amount' => $amount*100,
@@ -92,16 +92,17 @@ class WelcomeController extends Controller
                 }else{
                     return back()->with('error','El pago fue capturado, pero hubo un error con la realización de la recarga, comunícate al 8002258235, 9613602339, 9616177800 para reclamar tu recarga de $'.number_format($amount,2).' proporcionando tu número <strong>'.$number.'</strong>. Puedes mandar comprobante de la transacción tomando captura en el siguiente enlace: <a href="'.$receipt_url.'" target="_blank">Comprobante aquí.</a>');
                 }
-
                 // return $response['http_code'];
                 // if($response->http_code )
-            }else{
+            }
+            else{
                 return back()->with('error','El pago <strong>NO</strong> fue capturado, hubo un error durante la debitación del saldo en tu tarjeta, comunícate al 8002258235, 9613602339 o 9616177800 para darte solución, proporcionando tu número <strong>'.$number.'</strong>');
             }
-            
         } catch (\Stripe\Error\CardException $e) {
+            return "Hola";
             return $e->getMessage();
         } catch(Exception $e){
+            return "Hola 2";
             return $e->getMessage();
         }
         

@@ -180,6 +180,7 @@ class MyConectaController extends Controller
     }
 
     public function myConectaReference(Request $request){
+        //return $request;
         $response = Http::withHeaders([
             'Content-Type' => 'application/json'
         ])->post('http://187.217.216.244/generateReferenceAPIPublic',[

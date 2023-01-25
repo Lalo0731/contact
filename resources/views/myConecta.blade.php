@@ -636,17 +636,14 @@
             success: function(response){
                 Swal.close();
                 response = JSON.parse(response);
-                console.log("RESPONSE: ",response);
                 dataMSISDN = response.dataMSISDN;
                 packsSurplus = response.packsSurplus;
-
-                console.log("dataMSISDN",dataMSISDN);
-
+                console.log(dataMSISDN);
                 $('#name').val(dataMSISDN.name_user);
                 $('#lastname').val(dataMSISDN.lastname_user);
                 $('#email').val(dataMSISDN.email_user);
-                $('#cellphone').val(dataMSISDN.MSISDN);
                 //$('#cellphone').val(dataMSISDN.cellphone_user);
+                $('#cellphone').val(dataMSISDN.MSISDN);
                 $('#number_id').val(dataMSISDN.number_id);
                 $('#client_id').val(dataMSISDN.id_user);
 
@@ -664,6 +661,12 @@
                 
                 packsSurplus.forEach(function(element){
                     //    console.log(element);
+                    if (dataMSISDN.producto.trim() == 'MOV') {
+                        offerID= element.offerID_second
+                    }else{
+                        offerID = element.offerID
+                    }
+
                     packs+='<div class="col-md-6 col-lg-3 ">'+
                                     '<div class="staff" >'+
                                         '<div class="text pt-3 px-3 pb-4 text-center text-center2">'+
@@ -671,7 +674,7 @@
                                             '<span class="position mb-2 animate__animated animate__rubberBand animate__infinite">$'+parseFloat(element.price_sale).toFixed(2)+'</span>'+
                                             '<div class="faded">'+
                                                 '<button class="btn btn-sm btn-warning" onclick="defineType(this.id)" id="purchase_'+element.id+'" data-offer-id="'+element.id+'" data-name="'+element.name+'" '+
-                                                'data-type="5" data-rate-id="'+dataMSISDN.rate_id+'" data-amount="'+element.price_sale+'" data-offer-altan="'+element.offerID+'" data-concept="Compra de GBs Altcel" data-pay-id="0">Comprar <i class="fa fa-usd" aria-hidden="true"></i></button>'+
+                                                'data-type="5" data-rate-id="'+dataMSISDN.rate_id+'" data-amount="'+element.price_sale+'" data-offer-altan="'+offerID+'" data-concept="Compra de GBs Altcel" data-pay-id="0">Comprar <i class="fa fa-usd" aria-hidden="true"></i></button>'+
                                             '</div>'+
                                         '</div>'+
                                     '</div>'+
@@ -1050,7 +1053,6 @@ $('.paymentMethod').click(function(){
         let referencestype = $('#referencestype').val();
         let data, link = '';
 
-
         // if(pay_id == 0){
         //     pay_id = null;
         // }
@@ -1082,7 +1084,7 @@ $('.paymentMethod').click(function(){
             success: function(response){
                 Swal.close();
                 response = JSON.parse(response);
-                link = response.url;
+                link = response.url
                 window.location.href = link;
                 // console.log(response);
                 // console.log(link);
@@ -1175,11 +1177,12 @@ $('#generateReference').click(function(){
             });
         },
         success: function(response){
+            console.log("RESPONSE: ",response);
             Swal.close();
- 
-            response = JSON.parse(response);
 
-            // console.log(response);
+            response = JSON.parse(response);
+            //console.log("RESPONSE: ",response);
+    
             if(channel == 1){
             // referenceWhatsapp = response.reference;
             pdfPaynet(response.reference,cellphone,name,lastname);
@@ -1268,14 +1271,15 @@ var form = document.getElementById('payment-form');
             } else {
             // Send the token to your server.
             stripeTokenHandler(result.token);
+            //Bloqueart boton de stripe
             var btncompra = document.getElementById('stripePagar');
             btncompra.disabled = true; 
             }
         });
     });
 
-
     function stripeTokenHandler(token) {
+        console.log("TOKEN: ",token);
         // Insert the token ID into the form so it gets submitted to the server
         var form = document.getElementById('payment-form');
         var hiddenInput = document.createElement('input');

@@ -37,7 +37,7 @@ class Controller extends BaseController
     }
     
     public function notificationWH(Request $request){
-        Notification::insert(['petition'=>$request]);
+        Notification::insert(['petition'=> $request]);
 	// return "Hecho";
         $type = $request->type;
         $event_date = $request->event_date;
